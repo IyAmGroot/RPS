@@ -1,3 +1,5 @@
 # RPS
 
-Eric's Awesome Changes VERY IMPORTANT!!!!
+Rock Paper Scissors game.  
+
+Two players can play RPS and talk trash.
