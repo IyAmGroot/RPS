@@ -1,3 +1,35 @@
+@font-face {
+  font-family: BurnedLetters;
+  src: url(BurnedLetters.ttf);
+}
+@font-face {
+  font-family: JFRockOut;
+  src: url(JFRocOut.ttf);
+}
+@font-face {
+  font-family: Scissors;
+  src: url(Scissors.ttf);
+}
+
+.rockText {
+  font-family: JFRockOut;
+  color: #723f06;
+  opacity: 0.9;
+  font-size: 40pt;
+}
+.paperText {
+  font-family: BurnedLetters;
+  font-size: 60pt;
+}
+.scissorsText {
+  font-family: Scissors;
+  font-size: 60pt;
+}
+.thisDisplay {
+  font-family: "Cabin Sketch", cursive;
+  font-size: 50px;
+}
+
 .align-items-center {
   -ms-flex-align: center !important;
   align-items: center !important;
@@ -62,9 +94,17 @@ body {
 .battlePics:active {
   box-shadow: none;
 }
+#messages {
+  height: 400px;
+  width: 100%;
+  background-color: #fff;
+  margin-bottom: 10px;
+  overflow-y: auto;
+}
 
-/* @media screen and (min-width: 1500px) {
-  .row {
-    width: 1500px;
-  }
-} */
+.red {
+  color: #ee0000;
+}
+.blue {
+  color: #0000ee;
+}

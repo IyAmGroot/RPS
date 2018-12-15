@@ -9,7 +9,10 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     />
-
+    <link
+      href="https://fonts.googleapis.com/css?family=Cabin+Sketch:400,700"
+      rel="stylesheet"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <link rel="stylesheet" href="assets/css/rps.css" />
@@ -21,7 +24,11 @@
         <div
           class="col-md-12 d-flex flex-column align-items-center justify-content-center"
         >
-          <h1>Rock - Paper - Scissors</h1>
+          <h1>
+            <span class="rockText">Rock</span> -
+            <span class="paperText">Paper</span> -
+            <span class="scissorsText">s</span>
+          </h1>
         </div>
       </div>
       <div class="row">
@@ -43,10 +50,12 @@
       </div>
       <div class="row">
         <div class="col-md-4 d-flex flex-column align-items-center">
-          <div>
-            <h3 id="p1Name"><span id="p1Wins"></span></h3>
+          <div id="p1Div">
+            <h3 class="thisDisplay">
+              <span id="p1Name"></span><span id="p1Wins"></span>
+            </h3>
           </div>
-          <div><h4 id="p1Rec"></h4></div>
+          <div><h4 class="thisDisplay" id="p1Rec"></h4></div>
           <div id="bd1" class="battleDiv">
             <div id="p1ButtonDiv" class="hide">
               <img
@@ -78,12 +87,9 @@
         <div class="col-md-4">
           <div id="bd2" class="battleDiv">
             <div class="row">
-              <div class="col-md-12"><span id="battleText"></span></div>
-            </div>
-            <div class="row">
               <div class="col-md-12">
-                <!-- <span id="battleText"></span> -->
-                <input id="textArea1" type="textarea" />
+                <!-- <input id="textArea1" type="textarea" /> -->
+                <div id="messages"></div>
               </div>
             </div>
             <div class="row">
@@ -101,11 +107,13 @@
           </div>
         </div>
         <div class="col-md-4 col-md-4 d-flex flex-column align-items-center">
-          <div>
-            <h3 id="p2Name"><span id="p2Wins"></span></h3>
+          <div id="p2Div">
+            <h3 class="thisDisplay">
+              <span id="p2Name"></span><span id="p2Wins"></span>
+            </h3>
           </div>
 
-          <div><h4 id="p2Rec"></h4></div>
+          <div><h4 class="thisDisplay" id="p2Rec"></h4></div>
 
           <div id="bd3" class="battleDiv">
             <div id="p2ButtonDiv" class="hide">

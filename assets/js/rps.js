@@ -1,3 +1,4 @@
+/*************GLOBAL VARIABLES**************/
 var p1Choice, p2Choice, p1, p2, iAm, gameOn;
 var p1Ref, p2Ref;
 var p1W = 0;
@@ -80,16 +81,39 @@ database.ref().on("value", function(snapshot) {
     processData();
   }
 });
-database.ref("/chat/p1").on("value", function(snapshot) {
-  console.log("p1 chat");
+database.ref("/chat1").on("value", function(snapshot) {
+  var x = snapshot.val().text;
+  var msg = $("<h6/>")
+    .addClass("blue")
+    .html(p1 + " says:  " + x + "<br>");
+  if (x !== "") {
+    $("#messages").append(msg);
+  }
 });
-database.ref("/chat/p2").on("value", function(snapshot) {
-  console.log("p2 chat");
+database
+  .ref("/chat1")
+  .onDisconnect()
+  .set({ text: "" });
+
+database.ref("/chat2").on("value", function(snapshot) {
+  var x = snapshot.val().text;
+  if (p2 === "OFFLINE") {
+    return;
+  }
+  var msg = $("<h6/>")
+    .addClass("red")
+    .text(p2 + " says:  " + x);
+  if (x !== "") {
+    $("#messages").append(msg);
+  }
 });
 
+database
+  .ref("/chat2")
+  .onDisconnect()
+  .set({ text: "" });
+
 function player1Logic() {
-  console.log("Player 1");
-  console.log("p2" + p2);
   if (p2 === "OFFLINE") {
     $("#welcome").text(
       "Welcome, " + p1 + ". Waiting on another player to join."
@@ -105,8 +129,6 @@ function player1Logic() {
     $("#p2Name").text(p2);
     gameOn = true;
     $("#welcome").text("Welcome, " + p1 + " and " + p2 + ".  Good luck!");
-    //$("#p1ButtonDiv").removeClass("hide");
-    //$("#waitingDiv1").addClass("hide");
   }
 
   if (gameOn) {
@@ -126,8 +148,7 @@ function player1Logic() {
       }
     } else if (p1Choice) {
       //p1 Selected
-      $("#waiting1").removeClass("hide");
-      $("#waiting1").text(p1 + " picked " + $(this).attr("data-val"));
+      //no changes needed here
     } else {
       $("#bd1").removeClass("hide");
       $(".p1Pic").removeClass("hide");
@@ -140,7 +161,6 @@ function player1Logic() {
 }
 
 function player2Logic() {
-  console.log("Player 2");
   if (p1 === "OFFLINE") {
     $("#welcome").text(
       "Welcome, " + p2 + ". Waiting on another player to join."
@@ -172,14 +192,15 @@ function player2Logic() {
       $("#bd3").removeClass("hide");
       $("#p1Pick").removeClass("hide");
       $("#p2Pick").removeClass("hide");
-    } else if (p1Choice) {
+    } else if (p2Choice) {
+      // p2 Selected
+      // no changes needed here.
+    } else {
       $("#bd3").removeClass("hide");
       $(".p2Pic").removeClass("hide");
       $("#p2ButtonDiv").removeClass("hide");
       $("#waitingDiv2").addClass("hide");
-    } else {
       $("#p1ButtonDiv").addClass("hide");
-      $("#p2ButtonDiv").addClass("hide");
     }
   }
 }
@@ -207,12 +228,13 @@ function playerNoneLogic() {
 }
 function newGame() {
   setTimeout(function() {
-    $("#p1Name").removeClass("tie");
-    $("#p2Name").removeClass("tie");
-    $("#p1Name").removeClass("winner");
-    $("#p2Name").removeClass("winner");
+    $("#p1Div").removeClass("tie");
+    $("#p2Div").removeClass("tie");
+    $("#p1Div").removeClass("winner");
+    $("#p2Div").removeClass("winner");
     $("#p1Wins").text("");
     $("#p2Wins").text("");
+    $("#battleDiv").empty();
     database.ref("/p1").update({
       choice: ""
     });
@@ -267,19 +289,19 @@ $(document).ready(function() {
     var smack = $("#trash")
       .val()
       .trim();
+    $("#trash").val("");
     switch (iAm) {
       case "p1":
         //post p1 talk
-        database.ref("/chat").update({ p1: smack });
+        database.ref("/chat1").update({ text: smack });
         break;
       case "p2":
         //post p2 talk
-        database.ref("/chat").update({ p2: smack });
+        database.ref("/chat2").update({ text: smack });
         break;
       default:
       //post nothing
     }
-    $("#trash").val("");
   });
 });
 
@@ -351,23 +373,23 @@ function processData() {
   switch (winner) {
     case "p1":
       //highlight p1
-      $("#p1Name").addClass("winner");
+      $("#p1Div").addClass("winner");
       $("#p1Wins").text(" WINS!!");
       break;
     case "p2":
       //highight p2
-      $("#p2Name").addClass("winner");
+      $("#p2Div").addClass("winner");
       $("#p2Wins").text(" WINS!!");
       break;
     case "tie":
       //highlight both
-      $("#p1Name").addClass("tie");
-      $("#p2Name").addClass("tie");
+      $("#p1Div").addClass("tie");
+      $("#p2Div").addClass("tie");
       $("#p1Wins").text(" Ties");
       $("#p2Wins").text(" Ties");
   }
-
-  $("#battleText").text(msg);
+  var x = $("<h4>").html("<strong>" + msg + "</strong>");
+  // $("#battleText").append(x);
   $("#p1Rec").text("W: " + p1W + " | L: " + p1L + " | T: " + p1T);
   $("#p2Rec").text("W: " + p2W + " | L: " + p2L + " | T: " + p2T);
   newGame();
